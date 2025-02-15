@@ -1,0 +1,11 @@
+name: Use Reusable Workflow for CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  workflow-reusable:
+    uses: mor19213/workflow-templates/.github/workflows/action-reusable.yaml@main
