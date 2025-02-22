@@ -1,0 +1,5 @@
+apiVersion: v2
+name: devsu-test-chart
+description: Chart de Helm para Devsu
+version: 0.1.0
+appVersion: "1.0"
