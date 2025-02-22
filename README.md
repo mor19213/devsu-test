@@ -1,6 +1,7 @@
 # Prueba para DevOps en Devsu de Daniela Morales Ponce
 
 ## Diagramas
+![Arquitectura](diagrams/architecture.png)
 
 ## Especificaciones
 
