@@ -9,3 +9,4 @@ on:
 jobs:
   workflow-reusable:
     uses: mor19213/workflow-templates/.github/workflows/action-reusable.yaml@main
+    secrets: inherit
