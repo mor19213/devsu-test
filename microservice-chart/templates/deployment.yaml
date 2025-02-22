@@ -20,5 +20,21 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: DJANGO_SECRET_KEY
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: DATABASE_NAME
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: /app/db.sqlite3
+              subPath: db.sqlite3
+      volumes:
+        - name: sqlite-storage
+          emptyDir: {}
