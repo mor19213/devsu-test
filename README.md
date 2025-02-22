@@ -1,139 +1,28 @@
-# Demo Devops Python
+# Prueba para DevOps en Devsu de Daniela Morales Ponce
 
-This is a simple application to be used in the technical test of DevOps.
+## Diagramas
 
-## Getting Started
+## Especificaciones
 
-### Prerequisites
+### Contenedor
+Se desarrolló el `Dockerfile` con multi-stage para que la imagen final ocupe menos espacio. Una etapa para hacer toda la instalación de las dependencias y otra etapa para el despliegue de la aplicación
 
-- Python 3.11.3
+### Pipeline
+Se utilizó GitHub Actions para crear el pipeline de CI/CD a través de workflows reusables definidos en el [repositorio de workflows](https://github.com/mor19213/workflow-templates). Se desarrolló una etapa de seguridad con análisis de código estático con CodeQL (el cual exporta la covertura a un HTML) y análisis de vulnerabilidades con Trivy, una etapa de testing unitario con el módulo de tests nativo de Django, una etapa de Linting con Flake8, una etapa de build de la imágen de Docker, una etapa de push al registry de GitHub y la última etapa despliega con Helm el componente a Kubernetes
 
-### Installation
+### Helm
+Se creó un chart de Helm en el [repositorio de charts](https://github.com/mor19213/devsu-chart), con el cual se despliegan todos los manifiestos de Kubernetes.
+- Deployment
+- Service
+- HPA
+- Secrets
+- Ingress (este todavía no se utiliza, pero se dejó para un caso productivo)
 
-Clone this repo.
+### IaC
+- Se utilizó Terraform para definir y configurar la infraestructura como código
+- Se utilizó Terraform Cloud para poder hacer el `terraform plan` y `terraform apply` y al mismo tiempo guardar el estado de Terraform. Para esto, se creó una cuenta gratuita, un workspace, se conectó con GitHub y se configuraron las variables (como el token de Digital Ocean para poder desplegar)
 
-```bash
-git clone https://bitbucket.org/devsu/demo-devops-python.git
-```
-
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Migrate database
-
-```bash
-py manage.py makemigrations
-py manage.py migrate
-```
-
-### Database
-
-The database is generated as a file in the main path when the project is first run, and its name is `db.sqlite3`.
-
-Consider giving access permissions to the file for proper functioning.
-
-## Usage
-
-To run tests you can use this command.
-
-```bash
-py manage.py test
-```
-
-To run locally the project you can use this command.
-
-```bash
-py manage.py runserver
-```
-
-Open http://localhost:8000/api/ with your browser to see the result.
-
-### Features
-
-These services can perform,
-
-#### Create User
-
-To create a user, the endpoint **/api/users/** must be consumed with the following parameters:
-
-```bash
-  Method: POST
-```
-
-```json
-{
-    "dni": "dni",
-    "name": "name"
-}
-```
-
-If the response is successful, the service will return an HTTP Status 200 and a message with the following structure:
-
-```json
-{
-    "id": 1,
-    "dni": "dni",
-    "name": "name"
-}
-```
-
-If the response is unsuccessful, we will receive status 400 and the following message:
-
-```json
-{
-    "detail": "error"
-}
-```
-
-#### Get Users
-
-To get all users, the endpoint **/api/users** must be consumed with the following parameters:
-
-```bash
-  Method: GET
-```
-
-If the response is successful, the service will return an HTTP Status 200 and a message with the following structure:
-
-```json
-[
-    {
-        "id": 1,
-        "dni": "dni",
-        "name": "name"
-    }
-]
-```
-
-#### Get User
-
-To get an user, the endpoint **/api/users/<id>** must be consumed with the following parameters:
-
-```bash
-  Method: GET
-```
-
-If the response is successful, the service will return an HTTP Status 200 and a message with the following structure:
-
-```json
-{
-    "id": 1,
-    "dni": "dni",
-    "name": "name"
-}
-```
-
-If the user id does not exist, we will receive status 404 and the following message:
-
-```json
-{
-    "detail": "Not found."
-}
-```
-
-## License
-
-Copyright © 2023 Devsu. All rights reserved.
+### Entorno Público
+Se utilizó la nube pública Digital Ocean para desplegar la infraestructura, dentro de la cual se desplegó
+- Cluster de Kubernetes
+- Load Balancer (para tener una [IP pública](http://206.189.253.135/api/))
