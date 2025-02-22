@@ -31,10 +31,3 @@ spec:
                 secretKeyRef:
                   name: {{ .Chart.Name }}-secret
                   key: DATABASE_NAME
-          volumeMounts:
-            - name: sqlite-storage
-              mountPath: /app/db.sqlite3
-              subPath: db.sqlite3
-      volumes:
-        - name: sqlite-storage
-          emptyDir: {}

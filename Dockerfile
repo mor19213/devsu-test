@@ -16,16 +16,11 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# RUN useradd -m myuser
-
 WORKDIR /app
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
-# COPY --chown=myuser:myuser . .
 COPY . .
 ENV PATH=/home/myuser/.local/bin:$PATH
-
-# USER myuser
 
 EXPOSE 8000
 
