@@ -20,7 +20,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-COPY --from=builder /root/.local /home/myuser/.local
+COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 # COPY --chown=myuser:myuser . .
 COPY . .
 ENV PATH=/home/myuser/.local/bin:$PATH
