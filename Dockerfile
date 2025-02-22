@@ -1,4 +1,4 @@
-# Stage 1: Builder
+# ------------------- Stage 1: Build Stage ------------------------------
 FROM python:3.11-slim as builder
 
 ENV PYTHONUNBUFFERED=1 \
@@ -14,22 +14,22 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir --user -r requirements.txt
 
-# Stage 2: Runtime
+# ------------------- Stage 2: Final Stage ------------------------------
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-RUN useradd -m myuser
+# RUN useradd -m myuser
 
 WORKDIR /app
 
 COPY --from=builder /root/.local /home/myuser/.local
-COPY --chown=myuser:myuser . .
-
+# COPY --chown=myuser:myuser . .
+COPY . .
 ENV PATH=/home/myuser/.local/bin:$PATH
 
-USER myuser
+# USER myuser
 
 EXPOSE 8000
 
